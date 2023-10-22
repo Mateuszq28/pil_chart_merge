@@ -15,7 +15,7 @@ def main():
 
 
     img_names = [str(i)+".png" for i in range(start_num,start_num+num)]
-    img_names = [str(4)+".png" for i in range(start_num,start_num+num)]
+    # img_names = [str(4)+".png" for i in range(start_num,start_num+num)]
     imgs = [Image.open(name) for name in img_names]
     imgs_cut = [cut_img(im) for im in imgs]
     imgs = unify_size(imgs_cut, background)
