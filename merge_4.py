@@ -35,15 +35,14 @@ def main():
     if idx_mod != 0:
         idx_2d += [idx_list[l-idx_mod:l]]
 
-    print(idx_2d)
     rows2merge = []
     for row_2d in idx_2d:
-        print(row_2d)
         imgs2merge = [imgs[i] for i in row_2d]
         row_img = merge_col(imgs2merge, margin=x_margin, bcg=background, bcg_margin=marin_background)
         rows2merge.append(row_img)
     merged_img = merge_row(rows2merge, margin=y_margin, bcg=background, bcg_margin=marin_background)
     merged_img.save("merged_image.png","PNG")
+
 
 def cut_img(img):
     yadd = 600
@@ -60,9 +59,6 @@ def cut_img(img):
     oy_end = 91
     img_arr = np.array(img)
     img_arr = img_arr[y_start-oy_start : y_end+oy_end, x_start-ox_start : x_end+ox_end]
-    print(img_arr.shape)
-    print(y_start)
-    print(y_end)
     img = Image.fromarray(img_arr)
     return img
 
@@ -91,25 +87,21 @@ def find_line(img, start, end, line_orientation):
                 y = pos[1] + delta
             else:
                 x = pos[0] + delta
-            # print("(x,y)", x, y)
-            # print(img_arr[y,x])
             if not np.array_equal(img_arr[y,x], check_val):
                 counter = 0
                 break
             else:
-                # print(img_arr[y,x])
                 counter += 1
                 if counter >= 41:
                     return [x,y]
     return None
 
+
 def unify_size(imgs, bcg):
     max_x = max([im.size[0] for im in imgs])
     max_y = max([im.size[1] for im in imgs])
     out_imgs = []
-    print(len(imgs))
     for im in imgs:
-        print(len(imgs))
         if im.size[0] < max_x or im.size[1] < max_y:
             new_img = Image.new('RGB',(max_x, max_y), (bcg,bcg,bcg))
             paste_x = (max_x-im.size[0])//2
@@ -119,6 +111,7 @@ def unify_size(imgs, bcg):
         else:
             out_imgs.append(im)
     return out_imgs
+
 
 def merge_col(imgs, margin, bcg, bcg_margin):
     max_y = max([im.size[1] for im in imgs])
